@@ -2,7 +2,7 @@
   "buildCommand": "pnpm run build",
   "outputDirectory": ".next",
   "framework": "nextjs",
-  "installCommand": "pnpm install --legacy-peer-deps",
+  "installCommand": "pnpm install --shamefully-hoist",
   "devCommand": "pnpm run dev",
   "regions": ["iad1"],
   "functions": {
