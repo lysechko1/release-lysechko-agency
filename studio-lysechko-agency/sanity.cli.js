@@ -5,5 +5,6 @@ export default defineCliConfig({
     projectId: '65m5tzie',
     dataset: 'production'
   },
-  studioHost: 'https://lysechko-agency.sanity.studio'
-}) 
+  // Pin the hosted Studio hostname to avoid interactive prompts during deploy
+  studioHost: 'lysechko-agency'
+})
