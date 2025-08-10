@@ -1,5 +1,3 @@
-export const dynamic = 'force-dynamic'
-
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import BlogPost from '@/components/blog/blog-post'
@@ -10,34 +8,35 @@ interface BlogPostPageProps {
   }
 }
 
-export async function generateStaticParams() {
-  try {
-    // Получаем все посты из Sanity напрямую
-    const { client } = await import('@/lib/sanity')
-    
-    const query = `
-      *[_type == "post" && publishedAt <= now()] {
-        "slug": slug.current
-      }
-    `
-    
-    const posts = await client.fetch(query)
-    
-    console.log('generateStaticParams slugs:', posts)
-    
-    return posts.map((post: any) => ({
-      slug: post.slug,
-    }))
-  } catch (error) {
-    console.error('Error generating static params:', error)
-    // Fallback к статическим slug'ам если что-то пошло не так
-    return [
-      { slug: 'how-to-increase-website-conversion-2024' },
-      { slug: 'top-5-digital-marketing-trends-2024' },
-      { slug: 'ai-in-marketing-chatgpt-for-business' }
-    ]
-  }
-}
+// Временно отключаем SSG для диагностики
+// export async function generateStaticParams() {
+//   try {
+//     // Получаем все посты из Sanity напрямую
+//     const { client } = await import('@/lib/sanity')
+//     
+//     const query = `
+//       *[_type == "post" && publishedAt <= now()] {
+//         "slug": slug.current
+//       }
+//     `
+//     
+//     const posts = await client.fetch(query)
+//     
+//     console.log('generateStaticParams slugs:', posts)
+//     
+//     return posts.map((post: any) => ({
+//       slug: post.slug,
+//     }))
+//   } catch (error) {
+//     console.error('Error generating static params:', error)
+//     // Fallback к статическим slug'ам если что-то пошло не так
+//     return [
+//       { slug: 'how-to-increase-website-conversion-2024' },
+//       { slug: 'top-5-digital-marketing-trends-2024' },
+//       { slug: 'ai-in-marketing-chatgpt-for-business' }
+//     ]
+//   }
+// }
 
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
   try {
