@@ -32,6 +32,10 @@ interface BlogPostProps {
 export default function BlogPost({ post }: BlogPostProps) {
   const { language, t } = useTranslation()
   
+  // Debug logging to verify data
+  console.log('BlogPost component received post:', post)
+  console.log('mainImage data:', post.mainImage)
+  
   const getLocalizedPath = (path: string) => {
     return language === "en" ? `/en${path}` : path
   }
@@ -80,11 +84,24 @@ export default function BlogPost({ post }: BlogPostProps) {
             </div>
             
             {post.mainImage && (
-              <div className="relative h-96 rounded-lg overflow-hidden">
+              <div className="relative h-96 rounded-lg overflow-hidden shadow-lg">
                 <img
                   src={post.mainImage}
                   alt={post.title}
                   className="w-full h-full object-cover"
+                  onError={(e) => {
+                    // Fallback if image fails to load
+                    const target = e.target as HTMLImageElement;
+                    target.style.display = 'none';
+                    const parent = target.parentElement;
+                    if (parent) {
+                      parent.innerHTML = `
+                        <div class="w-full h-full bg-gradient-to-br from-blue-100 to-indigo-100 flex items-center justify-center">
+                          <span class="text-gray-400">Изображение недоступно</span>
+                        </div>
+                      `;
+                    }
+                  }}
                 />
               </div>
             )}

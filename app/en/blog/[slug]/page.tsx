@@ -44,7 +44,25 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     
     // Фетч напрямую из Sanity с теми же фильтрами
     const post = await client.fetch(
-      `*[_type=="post" && slug.current==$slug && publishedAt <= now() && language=="en"][0]`,
+      `*[_type=="post" && slug.current==$slug && publishedAt <= now() && language=="en"][0]{
+        _id,
+        title,
+        "slug": slug.current,
+        body,
+        excerpt,
+        "mainImage": mainImage.asset->url,
+        publishedAt,
+        seoTitle,
+        seoDescription,
+        seoKeywords,
+        author->{
+          name,
+          "image": image.asset->url
+        },
+        categories[]->{
+          title
+        }
+      }`,
       { slug }
     )
     
@@ -78,7 +96,25 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     
     // Фетч напрямую из Sanity с теми же фильтрами
     const post = await client.fetch(
-      `*[_type=="post" && slug.current==$slug && publishedAt <= now() && language=="en"][0]`,
+      `*[_type=="post" && slug.current==$slug && publishedAt <= now() && language=="en"][0]{
+        _id,
+        title,
+        "slug": slug.current,
+        body,
+        excerpt,
+        "mainImage": mainImage.asset->url,
+        publishedAt,
+        seoTitle,
+        seoDescription,
+        seoKeywords,
+        author->{
+          name,
+          "image": image.asset->url
+        },
+        categories[]->{
+          title
+        }
+      }`,
       { slug }
     )
     
