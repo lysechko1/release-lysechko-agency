@@ -4,13 +4,41 @@ import { client } from '@/lib/sanity'
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
-    const page = parseInt(searchParams.get('page') || '1')
-    const limit = parseInt(searchParams.get('limit') || '6')
+    const page = searchParams.get('page')
+    const limit = searchParams.get('limit')
     const language = searchParams.get('language') || 'ru'
-    const offset = (page - 1) * limit
+    
+    // Если запрос без пагинации - возвращаем все посты (для generateStaticParams)
+    if (!page && !limit) {
+      const query = `
+        *[_type == "post" && publishedAt <= now() && language == $language] | order(publishedAt desc) {
+          _id,
+          title,
+          "slug": slug.current,
+          excerpt,
+          "mainImage": mainImage.asset->url,
+          publishedAt,
+          author->{
+            name,
+            "image": image.asset->url
+          },
+          categories[]->{
+            title
+          }
+        }
+      `
+      
+      const posts = await client.fetch(query, { language })
+      return NextResponse.json(posts)
+    }
+    
+    // Пагинация для обычных запросов
+    const pageNum = parseInt(page || '1')
+    const limitNum = parseInt(limit || '6')
+    const offset = (pageNum - 1) * limitNum
 
     const query = `
-      *[_type == "post" && publishedAt <= now() && language == $language] | order(publishedAt desc) [${offset}...${offset + limit}] {
+      *[_type == "post" && publishedAt <= now() && language == $language] | order(publishedAt desc) [${offset}...${offset + limitNum}] {
         _id,
         title,
         "slug": slug.current,
@@ -34,7 +62,7 @@ export async function GET(request: NextRequest) {
       client.fetch(countQuery, { language })
     ])
 
-    const hasMore = offset + limit < totalCount
+    const hasMore = offset + limitNum < totalCount
 
     return NextResponse.json({
       posts,
