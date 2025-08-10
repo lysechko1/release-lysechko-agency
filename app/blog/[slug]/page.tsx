@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import BlogPost from '@/components/blog/blog-post'
@@ -20,6 +22,8 @@ export async function generateStaticParams() {
     `
     
     const posts = await client.fetch(query)
+    
+    console.log('generateStaticParams slugs:', posts)
     
     return posts.map((post: any) => ({
       slug: post.slug,

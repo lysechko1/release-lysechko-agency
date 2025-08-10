@@ -7,7 +7,12 @@ export async function GET(
 ) {
   try {
     const query = `
-      *[_type == "post" && slug.current == $slug][0] {
+      *[
+        _type == "post" && 
+        slug.current == $slug &&
+        publishedAt <= now() &&
+        (!defined(language) || language == "ru")
+      ][0] {
         _id,
         title,
         "slug": slug.current,
