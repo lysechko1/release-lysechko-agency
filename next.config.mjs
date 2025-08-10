@@ -9,10 +9,6 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  experimental: {
-    // Enable better webhook handling
-    serverExternalPackages: ['@sanity/client'],
-  },
 }
 
 export default nextConfig
