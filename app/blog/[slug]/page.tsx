@@ -8,35 +8,34 @@ interface BlogPostPageProps {
   }
 }
 
-// Временно отключаем SSG для диагностики
-// export async function generateStaticParams() {
-//   try {
-//     // Получаем все посты из Sanity напрямую
-//     const { client } = await import('@/lib/sanity')
-//     
-//     const query = `
-//       *[_type == "post" && publishedAt <= now()] {
-//         "slug": slug.current
-//       }
-//     `
-//     
-//     const posts = await client.fetch(query)
-//     
-//     console.log('generateStaticParams slugs:', posts)
-//     
-//     return posts.map((post: any) => ({
-//       slug: post.slug,
-//     }))
-//   } catch (error) {
-//     console.error('Error generating static params:', error)
-//     // Fallback к статическим slug'ам если что-то пошло не так
-//     return [
-//       { slug: 'how-to-increase-website-conversion-2024' },
-//       { slug: 'top-5-digital-marketing-trends-2024' },
-//       { slug: 'ai-in-marketing-chatgpt-for-business' }
-//     ]
-//   }
-// }
+// Enable dynamic route generation for new posts
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
+// Generate static params for known posts at build time
+export async function generateStaticParams() {
+  try {
+    const { client } = await import('@/lib/sanity')
+    
+    const query = `
+      *[_type == "post" && publishedAt <= now()] {
+        "slug": slug.current
+      }
+    `
+    
+    const posts = await client.fetch(query)
+    
+    console.log('generateStaticParams slugs:', posts)
+    
+    return posts.map((post: any) => ({
+      slug: post.slug,
+    }))
+  } catch (error) {
+    console.error('Error generating static params:', error)
+    // Return empty array to allow dynamic generation
+    return []
+  }
+}
 
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
   try {
