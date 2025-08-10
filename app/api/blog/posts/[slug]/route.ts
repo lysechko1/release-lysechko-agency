@@ -6,12 +6,15 @@ export async function GET(
   { params }: { params: { slug: string } }
 ) {
   try {
+    const { searchParams } = new URL(request.url)
+    const language = searchParams.get('language') || 'ru'
+    
     const query = `
       *[
         _type == "post" && 
         slug.current == $slug &&
         publishedAt <= now() &&
-        (!defined(language) || language == "ru")
+        language == $language
       ][0] {
         _id,
         title,
@@ -34,7 +37,7 @@ export async function GET(
       }
     `
 
-    const post = await client.fetch(query, { slug: params.slug })
+    const post = await client.fetch(query, { slug: params.slug, language })
 
     if (!post) {
       return NextResponse.json(

@@ -18,20 +18,20 @@ export async function generateStaticParams() {
     const { client } = await import('@/lib/sanity')
     
     const query = `
-      *[_type == "post" && publishedAt <= now() && (!defined(language) || language == "ru")] {
+      *[_type == "post" && publishedAt <= now() && language == "en"] {
         "slug": slug.current
       }
     `
     
     const posts = await client.fetch(query)
     
-    console.log('generateStaticParams slugs:', posts)
+    console.log('generateStaticParams English slugs:', posts)
     
     return posts.map((post: any) => ({
       slug: post.slug,
     }))
   } catch (error) {
-    console.error('Error generating static params:', error)
+    console.error('Error generating static params for English posts:', error)
     // Return empty array to allow dynamic generation
     return []
   }
@@ -40,12 +40,12 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
   try {
     const { slug } = await params
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/blog/posts/${slug}?language=ru`)
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/blog/posts/${slug}?language=en`)
     const post = await response.json()
     
     if (!post || post.error) {
       return {
-        title: 'Статья не найдена',
+        title: 'Post not found',
       }
     }
 
@@ -61,7 +61,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
     }
   } catch (error) {
     return {
-      title: 'Статья не найдена',
+      title: 'Post not found',
     }
   }
 }
@@ -69,7 +69,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
   try {
     const { slug } = await params
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/blog/posts/${slug}?language=ru`)
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/blog/posts/${slug}?language=en`)
     const post = await response.json()
     
     if (!post || post.error) {
@@ -80,4 +80,4 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   } catch (error) {
     notFound()
   }
-} 
+}
