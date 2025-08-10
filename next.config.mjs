@@ -11,7 +11,7 @@ const nextConfig = {
   },
   experimental: {
     // Enable better webhook handling
-    serverComponentsExternalPackages: ['@sanity/client'],
+    serverExternalPackages: ['@sanity/client'],
   },
 }
 
