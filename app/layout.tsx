@@ -23,6 +23,8 @@ export default function RootLayout({
       <head>
         <link rel="alternate" href="https://yourdomain.com/" hrefLang="ru" />
         <link rel="alternate" href="https://yourdomain.com/en" hrefLang="en" />
+        {/* Bing Webmaster Tools verification */}
+        <meta name="msvalidate.01" content="7BAA975105D64989006A5B34B15A1CC5" />
         {/* Google Tag Manager script */}
         <Script
           id="gtm-script"
