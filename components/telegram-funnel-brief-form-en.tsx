@@ -215,7 +215,7 @@ export default function TelegramFunnelBriefFormEn({ language, t }: TelegramFunne
               </div>
               <div>
                 <Label htmlFor="contactEmail" className="text-base font-medium">
-                  Email
+                  Email (optional)
                 </Label>
                 <Input
                   id="contactEmail"
@@ -224,7 +224,6 @@ export default function TelegramFunnelBriefFormEn({ language, t }: TelegramFunne
                   value={formData.contactEmail}
                   onChange={handleChange}
                   placeholder="john@example.com"
-                  required
                 />
               </div>
             </div>

@@ -1,12 +1,42 @@
 import { NextRequest, NextResponse } from "next/server"
-import nodemailer from "nodemailer"
+
+// Функция для отправки сообщения в Telegram
+async function sendTelegramMessage(message: string) {
+  const botToken = process.env.TELEGRAM_BOT_TOKEN
+  const chatId = process.env.TELEGRAM_CHAT_ID
+  
+  if (!botToken || !chatId) {
+    console.warn("Telegram credentials not configured")
+    return
+  }
+
+  try {
+    const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: message,
+        parse_mode: "HTML",
+      }),
+    })
+
+    if (!response.ok) {
+      console.error("Failed to send Telegram message:", response.statusText)
+    }
+  } catch (error) {
+    console.error("Error sending Telegram message:", error)
+  }
+}
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
     
     // Валидация обязательных полей
-    const requiredFields = ["contactName", "contactEmail", "contactPhone"]
+    const requiredFields = ["contactName", "contactPhone"]
     for (const field of requiredFields) {
       if (!body[field] || body[field].trim() === "") {
         return NextResponse.json(
@@ -16,79 +46,62 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Создание транспорта для отправки email
-    const transporter = nodemailer.createTransporter({
-      host: process.env.SMTP_HOST,
-      port: parseInt(process.env.SMTP_PORT || "587"),
-      secure: false,
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
-    })
+    // Формирование сообщения для Telegram
+    const telegramMessage = `
+<b>📋 Новый бриф на запуск автоворонки в Telegram через Leeloo.ai</b>
 
-    // Формирование HTML письма
-    const htmlContent = `
-      <h2>📋 Новый бриф на запуск автоворонки в Telegram через Leeloo.ai</h2>
-      
-      <h3>👤 Контактная информация</h3>
-      <p><strong>Имя:</strong> ${body.contactName}</p>
-      <p><strong>Email:</strong> ${body.contactEmail}</p>
-      <p><strong>Телефон:</strong> ${body.contactPhone}</p>
-      
-      <h3>1. 📦 Описание продукта и целей</h3>
-      <p><strong>Продукты:</strong> ${body.products?.join(", ") || "Не указано"}</p>
-      ${body.otherProduct ? `<p><strong>Другой продукт:</strong> ${body.otherProduct}</p>` : ""}
-      <p><strong>Количество воронок:</strong> ${body.funnelCount || "Не указано"}</p>
-      <p><strong>Ключевые действия:</strong> ${body.keyActions?.join(", ") || "Не указано"}</p>
-      ${body.otherAction ? `<p><strong>Другое действие:</strong> ${body.otherAction}</p>` : ""}
-      
-      <h3>2. 🎯 Целевая аудитория и сегменты</h3>
-      <p><strong>Целевая аудитория:</strong> ${body.targetAudience || "Не указано"}</p>
-      <p><strong>Разные цепочки:</strong> ${body.differentChains || "Не указано"}</p>
-      ${body.audienceSegments ? `<p><strong>Сегменты аудитории:</strong> ${body.audienceSegments}</p>` : ""}
-      <p><strong>Язык бота:</strong> ${body.botLanguage || "Не указано"}</p>
-      ${body.otherLanguage ? `<p><strong>Другой язык:</strong> ${body.otherLanguage}</p>` : ""}
-      
-      <h3>3. 📝 Контент и сценарии</h3>
-      <p><strong>Готовые тексты:</strong> ${body.readyTexts || "Не указано"}</p>
-      <p><strong>Типы сообщений:</strong> ${body.messageTypes?.join(", ") || "Не указано"}</p>
-      ${body.otherMessageType ? `<p><strong>Другой тип сообщения:</strong> ${body.otherMessageType}</p>` : ""}
-      <p><strong>Медиаконтент:</strong> ${body.mediaContent || "Не указано"}</p>
-      ${body.mediaScenario ? `<p><strong>Сценарий медиа:</strong> ${body.mediaScenario}</p>` : ""}
-      
-      <h3>4. 💳 Оплата и автоматизация</h3>
-      <p><strong>Текущие способы оплаты:</strong> ${body.currentPayments || "Не указано"}</p>
-      <p><strong>Оплата в Leeloo.ai:</strong> ${body.leelooPayment || "Не указано"}</p>
-      <p><strong>После оплаты:</strong> ${body.afterPayment || "Не указано"}</p>
-      ${body.otherAfterPayment ? `<p><strong>Другое после оплаты:</strong> ${body.otherAfterPayment}</p>` : ""}
-      
-      <h3>5. 🚀 Действия после покупки</h3>
-      <p><strong>Дополнительные сообщения:</strong> ${body.additionalMessages || "Не указано"}</p>
-      <p><strong>Продукты для допродажи:</strong> ${body.upsellProducts || "Не указано"}</p>
-      <p><strong>Рассылка:</strong> ${body.newsletter || "Не указано"}</p>
-      
-      <h3>6. 🎨 Визуал и фирменный стиль</h3>
-      <p><strong>Фирменный стиль:</strong> ${body.brandStyle || "Не указано"}</p>
-      <p><strong>Мини-лендинги:</strong> ${body.miniLandings || "Не указано"}</p>
-      <p><strong>Визуальные материалы:</strong> ${body.visualMaterials || "Не указано"}</p>
-      
-      <h3>7. ⏰ Сроки, поддержка и бюджет</h3>
-      <p><strong>Дата запуска:</strong> ${body.launchDate || "Не указано"}</p>
-      <p><strong>Техническая поддержка:</strong> ${body.technicalSupport || "Не указано"}</p>
-      
-      <hr>
-      <p><em>Бриф отправлен с сайта Lysechko Agency</em></p>
-      <p><em>Время отправки: ${new Date().toLocaleString("ru-RU")}</em></p>
+<b>👤 Контактная информация</b>
+<b>Имя:</b> ${body.contactName}
+<b>Телефон:</b> ${body.contactPhone}
+${body.contactEmail ? `<b>Email:</b> ${body.contactEmail}` : ''}
+
+<b>1. 📦 Описание продукта и целей</b>
+<b>Продукты:</b> ${body.products?.join(", ") || "Не указано"}
+${body.otherProduct ? `<b>Другой продукт:</b> ${body.otherProduct}` : ''}
+<b>Количество воронок:</b> ${body.funnelCount || "Не указано"}
+<b>Ключевые действия:</b> ${body.keyActions?.join(", ") || "Не указано"}
+${body.otherAction ? `<b>Другое действие:</b> ${body.otherAction}` : ''}
+
+<b>2. 🎯 Целевая аудитория и сегменты</b>
+<b>Целевая аудитория:</b> ${body.targetAudience || "Не указано"}
+<b>Разные цепочки:</b> ${body.differentChains || "Не указано"}
+${body.audienceSegments ? `<b>Сегменты аудитории:</b> ${body.audienceSegments}` : ''}
+<b>Язык бота:</b> ${body.botLanguage || "Не указано"}
+${body.otherLanguage ? `<b>Другой язык:</b> ${body.otherLanguage}` : ''}
+
+<b>3. 📝 Контент и сценарии</b>
+<b>Готовые тексты:</b> ${body.readyTexts || "Не указано"}
+<b>Типы сообщений:</b> ${body.messageTypes?.join(", ") || "Не указано"}
+${body.otherMessageType ? `<b>Другой тип сообщения:</b> ${body.otherMessageType}` : ''}
+<b>Медиаконтент:</b> ${body.mediaContent || "Не указано"}
+${body.mediaScenario ? `<b>Сценарий медиа:</b> ${body.mediaScenario}` : ''}
+
+<b>4. 💳 Оплата и автоматизация</b>
+<b>Текущие способы оплаты:</b> ${body.currentPayments || "Не указано"}
+<b>Оплата в Leeloo.ai:</b> ${body.leelooPayment || "Не указано"}
+<b>После оплаты:</b> ${body.afterPayment || "Не указано"}
+${body.otherAfterPayment ? `<b>Другое после оплаты:</b> ${body.otherAfterPayment}` : ''}
+
+<b>5. 🚀 Действия после покупки</b>
+<b>Дополнительные сообщения:</b> ${body.additionalMessages || "Не указано"}
+<b>Продукты для допродажи:</b> ${body.upsellProducts || "Не указано"}
+<b>Рассылка:</b> ${body.newsletter || "Не указано"}
+
+<b>6. 🎨 Визуал и фирменный стиль</b>
+<b>Фирменный стиль:</b> ${body.brandStyle || "Не указано"}
+<b>Мини-лендинги:</b> ${body.miniLandings || "Не указано"}
+<b>Визуальные материалы:</b> ${body.visualMaterials || "Не указано"}
+
+<b>7. ⏰ Сроки, поддержка и бюджет</b>
+<b>Дата запуска:</b> ${body.launchDate || "Не указано"}
+<b>Техническая поддержка:</b> ${body.technicalSupport || "Не указано"}
+
+<em>Бриф отправлен с сайта Lysechko Agency
+Время отправки: ${new Date().toLocaleString("ru-RU")}</em>
     `
 
-    // Отправка email
-    await transporter.sendMail({
-      from: process.env.SMTP_FROM || "noreply@lysechko.agency",
-      to: process.env.CONTACT_EMAIL || "info@lysechko.agency",
-      subject: "📋 Новый бриф на автоворонку в Telegram - Leeloo.ai",
-      html: htmlContent,
-    })
+    // Отправка в Telegram
+    await sendTelegramMessage(telegramMessage)
 
     return NextResponse.json({ success: true })
   } catch (error) {
