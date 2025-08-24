@@ -13,9 +13,7 @@ const nextConfig = {
     ],
   },
   // Увеличиваем лимиты для больших форм
-  experimental: {
-    serverComponentsExternalPackages: [],
-  },
+  serverExternalPackages: [],
   // Настройки для API routes
   async headers() {
     return [
