@@ -281,7 +281,6 @@ export default function GroomingSalonBriefForm({ language, t }: GroomingSalonBri
                 value={formData.salonAddress}
                 onChange={handleChange}
                 placeholder="Улица, номер, город"
-                required
               />
             </div>
             <div>

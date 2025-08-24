@@ -10,7 +10,6 @@ export async function POST(request: NextRequest) {
       'contactPhone', 
       'contactEmail',
       'salonName',
-      'salonAddress',
       'clientsDescription',
       'clientProblems',
       'clientObjections',
