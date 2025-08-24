@@ -1,9 +1,26 @@
 import { NextRequest, NextResponse } from "next/server"
 import { URLSearchParams } from "url"
 
+// Увеличиваем лимиты для больших форм
+export const config = {
+  api: {
+    bodyParser: {
+      sizeLimit: '10mb',
+    },
+  },
+}
+
 export async function POST(request: NextRequest) {
   try {
+    // Логируем размер запроса для отладки
+    const contentLength = request.headers.get('content-length')
+    console.log('Request content length:', contentLength)
+    
     const body = await request.json()
+    
+    // Логируем полученные данные для отладки
+    console.log('Received form data keys:', Object.keys(body))
+    console.log('Form data size:', JSON.stringify(body).length, 'characters')
     
     // Валидация обязательных полей
     const requiredFields = [
@@ -14,6 +31,7 @@ export async function POST(request: NextRequest) {
     
     for (const field of requiredFields) {
       if (!body[field] || body[field].trim() === '') {
+        console.log(`Missing required field: ${field}`)
         return NextResponse.json(
           { error: `Поле ${field} обязательно для заполнения` },
           { status: 400 }

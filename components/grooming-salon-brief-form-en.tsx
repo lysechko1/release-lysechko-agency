@@ -216,9 +216,13 @@ export default function GroomingSalonBriefFormEn({ language, t }: GroomingSalonB
                   name="contactName"
                   value={formData.contactName}
                   onChange={handleChange}
-                  placeholder="John Doe"
+                  placeholder="John Smith"
                   required
+                  maxLength={500}
                 />
+                <div className="text-sm text-slate-500 text-right">
+                  {formData.contactName.length}/500 characters
+                </div>
               </div>
               <div>
                 <Label htmlFor="contactPhone" className="text-base font-medium">
@@ -232,7 +236,11 @@ export default function GroomingSalonBriefFormEn({ language, t }: GroomingSalonB
                   onChange={handleChange}
                   placeholder="+48 123 456 789"
                   required
+                  maxLength={100}
                 />
+                <div className="text-sm text-slate-500 text-right">
+                  {formData.contactPhone.length}/100 characters
+                </div>
               </div>
             </div>
             <div>
@@ -247,7 +255,11 @@ export default function GroomingSalonBriefFormEn({ language, t }: GroomingSalonB
                 onChange={handleChange}
                 placeholder="john@example.com"
                 required
+                maxLength={500}
               />
+              <div className="text-sm text-slate-500 text-right">
+                {formData.contactEmail.length}/500 characters
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -268,7 +280,11 @@ export default function GroomingSalonBriefFormEn({ language, t }: GroomingSalonB
                   value={formData.salonName}
                   onChange={handleChange}
                   placeholder="Your salon name"
+                  maxLength={500}
                 />
+                <div className="text-sm text-slate-500 text-right">
+                  {formData.salonName.length}/500 characters
+                </div>
             </div>
             <div>
               <Label htmlFor="salonAddress" className="text-base font-medium">
@@ -280,7 +296,11 @@ export default function GroomingSalonBriefFormEn({ language, t }: GroomingSalonB
                 value={formData.salonAddress}
                 onChange={handleChange}
                 placeholder="Street, number, city"
+                maxLength={1000}
               />
+              <div className="text-sm text-slate-500 text-right">
+                {formData.salonAddress.length}/1000 characters
+              </div>
             </div>
             <div>
               <Label htmlFor="salonWebsite" className="text-base font-medium">
@@ -292,7 +312,11 @@ export default function GroomingSalonBriefFormEn({ language, t }: GroomingSalonB
                 value={formData.salonWebsite}
                 onChange={handleChange}
                 placeholder="www.example.com or @instagram"
+                maxLength={500}
               />
+              <div className="text-sm text-slate-500 text-right">
+                {formData.salonWebsite.length}/500 characters
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -385,7 +409,13 @@ export default function GroomingSalonBriefFormEn({ language, t }: GroomingSalonB
                 onChange={handleChange}
                 placeholder="Specify what exactly"
                 className="mt-2"
+                maxLength={500}
               />
+            )}
+            {formData.services.includes("Other") && (
+              <div className="text-sm text-slate-500 text-right">
+                {formData.otherService.length}/500 characters
+              </div>
             )}
           </CardContent>
         </Card>
@@ -410,7 +440,11 @@ export default function GroomingSalonBriefFormEn({ language, t }: GroomingSalonB
               onChange={handleChange}
               placeholder="Describe your clients..."
               rows={6}
+              maxLength={2000}
             />
+            <div className="text-sm text-slate-500 text-right">
+              {formData.clientsDescription.length}/2000 characters
+            </div>
           </CardContent>
         </Card>
 
@@ -428,7 +462,11 @@ export default function GroomingSalonBriefFormEn({ language, t }: GroomingSalonB
               onChange={handleChange}
               placeholder="Describe client problems..."
               rows={4}
+              maxLength={2000}
             />
+            <div className="text-sm text-slate-500 text-right">
+              {formData.clientProblems.length}/2000 characters
+            </div>
           </CardContent>
         </Card>
 
@@ -446,7 +484,11 @@ export default function GroomingSalonBriefFormEn({ language, t }: GroomingSalonB
               onChange={handleChange}
               placeholder="Describe client objections..."
               rows={4}
+              maxLength={2000}
             />
+            <div className="text-sm text-slate-500 text-right">
+              {formData.clientObjections.length}/2000 characters
+            </div>
           </CardContent>
         </Card>
 
@@ -486,7 +528,13 @@ export default function GroomingSalonBriefFormEn({ language, t }: GroomingSalonB
                 onChange={handleChange}
                 placeholder="Specify what exactly"
                 className="mt-2"
+                maxLength={500}
               />
+            )}
+            {formData.clientGeography === "Other" && (
+              <div className="text-sm text-slate-500 text-right">
+                {formData.otherGeography.length}/500 characters
+              </div>
             )}
           </CardContent>
         </Card>
@@ -502,9 +550,13 @@ export default function GroomingSalonBriefFormEn({ language, t }: GroomingSalonB
               name="competitors"
               value={formData.competitors}
               onChange={handleChange}
-              placeholder="List your competitors..."
+              placeholder="Specify your competitors..."
               rows={3}
+              maxLength={2000}
             />
+            <div className="text-sm text-slate-500 text-right">
+              {formData.competitors.length}/2000 characters
+            </div>
           </CardContent>
         </Card>
 
@@ -521,7 +573,11 @@ export default function GroomingSalonBriefFormEn({ language, t }: GroomingSalonB
               value={formData.startDate}
               onChange={handleChange}
               placeholder="When do you plan to start?"
+              maxLength={500}
             />
+            <div className="text-sm text-slate-500 text-right">
+              {formData.startDate.length}/500 characters
+            </div>
           </CardContent>
         </Card>
 
@@ -537,7 +593,11 @@ export default function GroomingSalonBriefFormEn({ language, t }: GroomingSalonB
               value={formData.budget}
               onChange={handleChange}
               placeholder="Specify budget per month"
+              maxLength={500}
             />
+            <div className="text-sm text-slate-500 text-right">
+              {formData.budget.length}/500 characters
+            </div>
           </CardContent>
         </Card>
 
@@ -577,7 +637,13 @@ export default function GroomingSalonBriefFormEn({ language, t }: GroomingSalonB
                 onChange={handleChange}
                 placeholder="Specify what exactly"
                 className="mt-2"
+                maxLength={500}
               />
+            )}
+            {formData.advertisingLanguage === "Other" && (
+              <div className="text-sm text-slate-500 text-right">
+                {formData.otherLanguage.length}/500 characters
+              </div>
             )}
           </CardContent>
         </Card>
@@ -595,7 +661,11 @@ export default function GroomingSalonBriefFormEn({ language, t }: GroomingSalonB
               onChange={handleChange}
               placeholder="Additional information..."
               rows={4}
+              maxLength={2000}
             />
+            <div className="text-sm text-slate-500 text-right">
+              {formData.additionalInfo.length}/2000 characters
+            </div>
           </CardContent>
         </Card>
 

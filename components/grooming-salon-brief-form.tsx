@@ -218,7 +218,11 @@ export default function GroomingSalonBriefForm({ language, t }: GroomingSalonBri
                   onChange={handleChange}
                   placeholder="Иван Иванов"
                   required
+                  maxLength={500}
                 />
+                <div className="text-sm text-slate-500 text-right">
+                  {formData.contactName.length}/500 символов
+                </div>
               </div>
               <div>
                 <Label htmlFor="contactPhone" className="text-base font-medium">
@@ -232,7 +236,11 @@ export default function GroomingSalonBriefForm({ language, t }: GroomingSalonBri
                   onChange={handleChange}
                   placeholder="+48 123 456 789"
                   required
+                  maxLength={100}
                 />
+                <div className="text-sm text-slate-500 text-right">
+                  {formData.contactPhone.length}/100 символов
+                </div>
               </div>
             </div>
             <div>
@@ -247,7 +255,11 @@ export default function GroomingSalonBriefForm({ language, t }: GroomingSalonBri
                 onChange={handleChange}
                 placeholder="ivan@example.com"
                 required
+                maxLength={500}
               />
+              <div className="text-sm text-slate-500 text-right">
+                {formData.contactEmail.length}/500 символов
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -268,7 +280,11 @@ export default function GroomingSalonBriefForm({ language, t }: GroomingSalonBri
                   value={formData.salonName}
                   onChange={handleChange}
                   placeholder="Название вашего салона"
+                  maxLength={500}
                 />
+                <div className="text-sm text-slate-500 text-right">
+                  {formData.salonName.length}/500 символов
+                </div>
             </div>
             <div>
               <Label htmlFor="salonAddress" className="text-base font-medium">
@@ -280,7 +296,11 @@ export default function GroomingSalonBriefForm({ language, t }: GroomingSalonBri
                 value={formData.salonAddress}
                 onChange={handleChange}
                 placeholder="Улица, номер, город"
+                maxLength={1000}
               />
+              <div className="text-sm text-slate-500 text-right">
+                {formData.salonAddress.length}/1000 символов
+              </div>
             </div>
             <div>
               <Label htmlFor="salonWebsite" className="text-base font-medium">
@@ -292,7 +312,11 @@ export default function GroomingSalonBriefForm({ language, t }: GroomingSalonBri
                 value={formData.salonWebsite}
                 onChange={handleChange}
                 placeholder="www.example.com или @instagram"
+                maxLength={500}
               />
+              <div className="text-sm text-slate-500 text-right">
+                {formData.salonWebsite.length}/500 символов
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -385,7 +409,13 @@ export default function GroomingSalonBriefForm({ language, t }: GroomingSalonBri
                 onChange={handleChange}
                 placeholder="Укажите что именно"
                 className="mt-2"
+                maxLength={500}
               />
+            )}
+            {formData.services.includes("Other") && (
+              <div className="text-sm text-slate-500 text-right">
+                {formData.otherService.length}/500 символов
+              </div>
             )}
           </CardContent>
         </Card>
@@ -410,7 +440,11 @@ export default function GroomingSalonBriefForm({ language, t }: GroomingSalonBri
               onChange={handleChange}
               placeholder="Опишите ваших клиентов..."
               rows={6}
+              maxLength={2000}
             />
+            <div className="text-sm text-slate-500 text-right">
+              {formData.clientsDescription.length}/2000 символов
+            </div>
           </CardContent>
         </Card>
 
@@ -428,7 +462,11 @@ export default function GroomingSalonBriefForm({ language, t }: GroomingSalonBri
               onChange={handleChange}
               placeholder="Опишите проблемы клиентов..."
               rows={4}
+              maxLength={2000}
             />
+            <div className="text-sm text-slate-500 text-right">
+              {formData.clientProblems.length}/2000 символов
+            </div>
           </CardContent>
         </Card>
 
@@ -446,7 +484,11 @@ export default function GroomingSalonBriefForm({ language, t }: GroomingSalonBri
               onChange={handleChange}
               placeholder="Опишите возражения клиентов..."
               rows={4}
+              maxLength={2000}
             />
+            <div className="text-sm text-slate-500 text-right">
+              {formData.clientObjections.length}/2000 символов
+            </div>
           </CardContent>
         </Card>
 
@@ -486,7 +528,13 @@ export default function GroomingSalonBriefForm({ language, t }: GroomingSalonBri
                 onChange={handleChange}
                 placeholder="Укажите что именно"
                 className="mt-2"
+                maxLength={500}
               />
+            )}
+            {formData.clientGeography === "Other" && (
+              <div className="text-sm text-slate-500 text-right">
+                {formData.otherGeography.length}/500 символов
+              </div>
             )}
           </CardContent>
         </Card>
@@ -504,7 +552,11 @@ export default function GroomingSalonBriefForm({ language, t }: GroomingSalonBri
               onChange={handleChange}
               placeholder="Укажите ваших конкурентов..."
               rows={3}
+              maxLength={2000}
             />
+            <div className="text-sm text-slate-500 text-right">
+              {formData.competitors.length}/2000 символов
+            </div>
           </CardContent>
         </Card>
 
@@ -521,7 +573,11 @@ export default function GroomingSalonBriefForm({ language, t }: GroomingSalonBri
               value={formData.startDate}
               onChange={handleChange}
               placeholder="Когда планируете начать?"
+              maxLength={500}
             />
+            <div className="text-sm text-slate-500 text-right">
+              {formData.startDate.length}/500 символов
+            </div>
           </CardContent>
         </Card>
 
@@ -537,7 +593,11 @@ export default function GroomingSalonBriefForm({ language, t }: GroomingSalonBri
               value={formData.budget}
               onChange={handleChange}
               placeholder="Укажите бюджет в месяц"
+              maxLength={500}
             />
+            <div className="text-sm text-slate-500 text-right">
+              {formData.budget.length}/500 символов
+            </div>
           </CardContent>
         </Card>
 
@@ -577,7 +637,13 @@ export default function GroomingSalonBriefForm({ language, t }: GroomingSalonBri
                 onChange={handleChange}
                 placeholder="Укажите что именно"
                 className="mt-2"
+                maxLength={500}
               />
+            )}
+            {formData.advertisingLanguage === "Other" && (
+              <div className="text-sm text-slate-500 text-right">
+                {formData.otherLanguage.length}/500 символов
+              </div>
             )}
           </CardContent>
         </Card>
@@ -595,7 +661,11 @@ export default function GroomingSalonBriefForm({ language, t }: GroomingSalonBri
               onChange={handleChange}
               placeholder="Дополнительная информация..."
               rows={4}
+              maxLength={2000}
             />
+            <div className="text-sm text-slate-500 text-right">
+              {formData.additionalInfo.length}/2000 символов
+            </div>
           </CardContent>
         </Card>
 
