@@ -262,14 +262,13 @@ export default function GroomingSalonBriefFormEn({ language, t }: GroomingSalonB
               <Label htmlFor="salonName" className="text-base font-medium">
                 Salon Name
               </Label>
-              <Input
-                id="salonName"
-                name="salonName"
-                value={formData.salonName}
-                onChange={handleChange}
-                placeholder="Your salon name"
-                required
-              />
+                              <Input
+                  id="salonName"
+                  name="salonName"
+                  value={formData.salonName}
+                  onChange={handleChange}
+                  placeholder="Your salon name"
+                />
             </div>
             <div>
               <Label htmlFor="salonAddress" className="text-base font-medium">
@@ -411,7 +410,6 @@ export default function GroomingSalonBriefFormEn({ language, t }: GroomingSalonB
               onChange={handleChange}
               placeholder="Describe your clients..."
               rows={6}
-              required
             />
           </CardContent>
         </Card>
@@ -430,7 +428,6 @@ export default function GroomingSalonBriefFormEn({ language, t }: GroomingSalonB
               onChange={handleChange}
               placeholder="Describe client problems..."
               rows={4}
-              required
             />
           </CardContent>
         </Card>
@@ -449,7 +446,6 @@ export default function GroomingSalonBriefFormEn({ language, t }: GroomingSalonB
               onChange={handleChange}
               placeholder="Describe client objections..."
               rows={4}
-              required
             />
           </CardContent>
         </Card>
@@ -525,7 +521,6 @@ export default function GroomingSalonBriefFormEn({ language, t }: GroomingSalonB
               value={formData.startDate}
               onChange={handleChange}
               placeholder="When do you plan to start?"
-              required
             />
           </CardContent>
         </Card>
@@ -542,7 +537,6 @@ export default function GroomingSalonBriefFormEn({ language, t }: GroomingSalonB
               value={formData.budget}
               onChange={handleChange}
               placeholder="Specify budget per month"
-              required
             />
           </CardContent>
         </Card>

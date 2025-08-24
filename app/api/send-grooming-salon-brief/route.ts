@@ -8,13 +8,7 @@ export async function POST(request: NextRequest) {
     const requiredFields = [
       'contactName',
       'contactPhone', 
-      'contactEmail',
-      'salonName',
-      'clientsDescription',
-      'clientProblems',
-      'clientObjections',
-      'startDate',
-      'budget'
+      'contactEmail'
     ]
     
     for (const field of requiredFields) {
